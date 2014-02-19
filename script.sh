@@ -15,20 +15,16 @@ if [ ! -d $downloads/$backup/$today ]; then
   mkdir $downloads/$backup/$today
 fi
 
-#backup the directories first
-for directory in $(find $downloads/* -maxdepth 0 -type d)
-do
+find $downloads/* -maxdepth 0 -type d|while read directory;do
   #omit the backup directory
   if [ "$(basename $directory)" == "$backup" ]
   then
     echo "$directory"
   else
-    mv $directory $downloads/$backup/$today/
+    mv "$directory" $downloads/$backup/$today/
   fi
 done
 
-#then the files
-for file in $(find $downloads/* -maxdepth 1 -type f)
-do
-    mv $file $downloads/$backup/$today/
+find $downloads/* -maxdepth 0 -type f|while read file; do
+    mv "$file" $downloads/$backup/$today/
 done
